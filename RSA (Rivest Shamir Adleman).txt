@@ -1,0 +1,47 @@
+import java.math.BigInteger;
+import java.security.SecureRandom;
+
+public class prac6 {
+    BigInteger p, q, n, d, e, phi;
+    SecureRandom r;
+
+    public prac6() {
+        r = new SecureRandom();
+        p = new BigInteger(2, 0, r);
+        q = new BigInteger(2, 0, r);
+        System.out.println("Prime numbers p and q are: " + p + ", " + q);
+
+        n = p.multiply(q);
+        phi = p.subtract(BigInteger.ONE).multiply(q.subtract(BigInteger.ONE));
+
+        e = BigInteger.valueOf(2);
+        while (phi.gcd(e).intValue() > 1) {
+            e = e.add(BigInteger.ONE);
+        }
+        d = e.modInverse(phi);
+
+        System.out.println("Public key: (" + n + ", " + e + ")");
+        System.out.println("Private key: (" + n + ", " + d + ")");
+
+        BigInteger msg = BigInteger.valueOf(15);
+        System.out.println("\nMessage: " + msg);
+
+        BigInteger encryptedMsg = encrypt(msg, e, n);
+        System.out.println("\nEncrypted Message: " + encryptedMsg);
+
+        BigInteger decryptedMsg = decrypt(encryptedMsg, d, n);
+        System.out.println("\nDecrypted Message: " + decryptedMsg);
+    }
+
+    BigInteger encrypt(BigInteger msg, BigInteger e, BigInteger n) {
+        return msg.modPow(e, n);
+    }
+
+    BigInteger decrypt(BigInteger msg, BigInteger d, BigInteger n) {
+        return msg.modPow(d, n);
+    }
+
+    public static void main(String[] args) {
+        new prac6();
+    }
+}

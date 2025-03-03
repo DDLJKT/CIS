@@ -1,0 +1,50 @@
+import javax.crypto.*;
+import java.util.Base64;
+
+public class prac5 {
+    private Cipher ecipher;
+    private Cipher dcipher;
+
+    // Constructor to initialize encryption and decryption ciphers
+    public prac5(SecretKey key) throws Exception {
+        ecipher = Cipher.getInstance("AES");
+        dcipher = Cipher.getInstance("AES");
+        ecipher.init(Cipher.ENCRYPT_MODE, key);
+        dcipher.init(Cipher.DECRYPT_MODE, key);
+    }
+
+    // Method to encrypt the string
+    public String encrypt(String str) throws Exception {
+        byte[] utf8 = str.getBytes("UTF8");
+        byte[] enc = ecipher.doFinal(utf8);
+        return Base64.getEncoder().encodeToString(enc);
+    }
+
+    // Method to decrypt the string
+    public String decrypt(String str) throws Exception {
+        byte[] dec = Base64.getDecoder().decode(str);
+        byte[] utf8 = dcipher.doFinal(dec);
+        return new String(utf8, "UTF8");
+    }
+
+    public static void main(String[] args) {
+        try {
+            // Generate AES key
+            SecretKey key = KeyGenerator.getInstance("AES").generateKey();
+            prac5 aes = new prac5(key);
+
+            String original = "Hello World";
+            System.out.println("Original: " + original);
+
+            // Encrypt and Decrypt the string
+            String encrypted = aes.encrypt(original);
+            System.out.println("Encrypted: " + encrypted);
+
+            String decrypted = aes.decrypt(encrypted);
+            System.out.println("Decrypted: " + decrypted);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}

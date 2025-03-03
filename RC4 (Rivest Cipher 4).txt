@@ -1,0 +1,29 @@
+class prac7 {
+    static char cipher[];
+
+    prac7(String pt, int[] key) {
+        int[] s = new int[255];
+        cipher = new char[pt.length()];
+
+        for (int i = 0; i < s.length; i++) s[i] = i;
+
+        int i = 0, j = 0;
+        for (int k = 0; k < pt.length(); k++) {
+            j = (s[i] + j + key[k % key.length]) % 256 + 1;
+
+            int temp = s[i];
+            s[i] = s[j];
+            s[j] = temp;
+
+            cipher[k] = (char) ((s[(s[i] + s[j]) % 256]) ^ pt.charAt(k));
+            i++;
+        }
+    }
+
+    public static void main(String args[]) {
+        String original = "Hello World";
+        System.out.println("Original: " + original);
+        new prac7(original, new int[]{1, 2, 3, 4, 5});
+        for (char c : cipher) System.out.print(c + " ");
+    }
+}

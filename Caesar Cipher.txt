@@ -1,0 +1,23 @@
+import java.io.*;
+
+class Prac1A {
+    public static void main(String[] args) {
+        int i;
+
+        // Using try-with-resources to automatically close the streams
+        try (
+            FileInputStream fis = new FileInputStream("1.txt");
+            FileOutputStream fos = new FileOutputStream("2.txt");
+            FileOutputStream os = new FileOutputStream("3.txt")
+        ) {
+            // Read from fis and write to fos and os
+            while ((i = fis.read()) != -1) {
+                fos.write(i);         // Copying file 1 to file 2
+                os.write(i + 6);      // Modifying and writing to file 3
+            }
+            System.out.println("File copied");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

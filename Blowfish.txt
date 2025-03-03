@@ -1,0 +1,22 @@
+import javax.crypto.*;
+import javax.swing.JOptionPane;
+
+public class prac8 {
+    public static void main(String[] args) throws Exception {
+        SecretKey secretkey = KeyGenerator.getInstance("Blowfish").generateKey();
+        Cipher cip = Cipher.getInstance("Blowfish");
+
+        String inputText = JOptionPane.showInputDialog("Enter text");
+       
+        // Encryption
+        cip.init(Cipher.ENCRYPT_MODE, secretkey);
+        byte[] encrypted = cip.doFinal(inputText.getBytes());
+
+        // Decryption
+        cip.init(Cipher.DECRYPT_MODE, secretkey);
+        byte[] decrypted = cip.doFinal(encrypted);
+
+        JOptionPane.showMessageDialog(null, "Encrypted: " + new String(encrypted) +
+                                              "\nDecrypted: " + new String(decrypted));
+    }
+}

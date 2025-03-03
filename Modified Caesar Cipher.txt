@@ -1,0 +1,39 @@
+import java.io.*;
+
+class prac1b {
+    public String Encrypt(int shift, String line) {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < line.length(); i++) {
+            int offset = (line.charAt(i) + shift) % 256;
+            result.append((char) offset);
+        }
+        return result.toString();
+    }
+
+    public String Decrypt(int shift, String line) {
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < line.length(); i++) {
+            int offset = (line.charAt(i) - shift) % 256;
+            if (offset < 0) offset += 256;
+            result.append((char) offset);
+        }
+        return result.toString();
+    }
+
+    public static void main(String[] args) throws IOException {
+        prac1b b = new prac1b();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        System.out.println("Menu:\n1: Encryption\n2: Decryption");
+        int choice = Integer.parseInt(br.readLine());
+
+        System.out.println("Enter the shift:");
+        int shift = Integer.parseInt(br.readLine());
+
+        System.out.println("Enter the line:");
+        String line = br.readLine();
+
+        String result = (choice == 1) ? b.Encrypt(shift, line) : b.Decrypt(shift, line);
+        System.out.println("Result: " + result);
+    }
+}

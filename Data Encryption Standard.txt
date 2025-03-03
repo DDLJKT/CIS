@@ -1,0 +1,49 @@
+import javax.crypto.*;
+import java.util.Base64;
+
+public class prac4 {
+    private Cipher ecipher;
+    private Cipher dcipher;
+
+    // Constructor to initialize encryption and decryption ciphers
+    public prac4(SecretKey key) throws Exception {
+        ecipher = Cipher.getInstance("DES");
+        dcipher = Cipher.getInstance("DES");
+        ecipher.init(Cipher.ENCRYPT_MODE, key);
+        dcipher.init(Cipher.DECRYPT_MODE, key);
+    }
+
+    // Method to encrypt the string
+    public String encrypt(String str) throws Exception {
+        byte[] utf8 = str.getBytes("UTF8");
+        byte[] enc = ecipher.doFinal(utf8);
+        return Base64.getEncoder().encodeToString(enc);
+    }
+
+    // Method to decrypt the string
+    public String decrypt(String str) throws Exception {
+        byte[] dec = Base64.getDecoder().decode(str);
+        byte[] utf8 = dcipher.doFinal(dec);
+        return new String(utf8, "UTF8");
+    }
+
+    // Main method
+    public static void main(String[] args) {
+        try {
+            SecretKey key = KeyGenerator.getInstance("DES").generateKey();
+            prac4 encrypter = new prac4(key);
+           
+            String s = "Hello World";
+            System.out.println("Original: " + s);
+           
+            String encrypted = encrypter.encrypt(s);
+            System.out.println("Encrypted: " + encrypted);
+           
+            String decrypted = encrypter.decrypt(encrypted);
+            System.out.println("Decrypted: " + decrypted);
+   
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    } 
+ }

@@ -1,0 +1,30 @@
+import java.math.BigInteger;
+import java.util.Scanner;
+
+class prac3 {
+    public static void main(String args[]) {
+        BigInteger n, g, x, y, a, b, k1, k2;
+        Scanner s = new Scanner(System.in);
+
+        // Input primes and secret keys
+        System.out.println("Enter A's prime number (n): ");
+        n = s.nextBigInteger();
+        System.out.println("Enter B's prime number (g): ");
+        g = s.nextBigInteger();
+        System.out.println("Enter A's secret key (x): ");
+        x = s.nextBigInteger();
+        System.out.println("Enter B's secret key (y): ");
+        y = s.nextBigInteger();
+
+        // Compute intermediate values and keys
+        a = g.modPow(x, n);
+        b = g.modPow(y, n);
+        k1 = b.modPow(x, n);
+        k2 = a.modPow(y, n);
+
+        // Output shared keys
+        System.out.println("A's key: " + k1);
+        System.out.println("B's key: " + k2);
+        s.close();
+    }
+}
